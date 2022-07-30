@@ -3,7 +3,11 @@
  
 # 30JUL2022
 # mxGlass
-# Fixed bug regarding log.insert()
+# Fixed bug regarding log.insert().
+
+# 30JUL2022
+# mxGlass
+# Added shuffle button.
 
 import tkinter as tk
 from tkinter import ttk
@@ -29,6 +33,11 @@ def clicked_neg():
 def add_log(x):
     global log
     log.insert(0, x)
+
+def shuffle():
+    global count
+    count = 0
+    label1.configure(text=f'Count = {count}')
 
 
 windows = tk.Tk()
@@ -80,6 +89,10 @@ custom_button.grid(column=1, row=5)
 
 custom_button = ttk.Button(windows, text="A", command=lambda: [clicked_neg(), add_log("A")])
 custom_button.grid(column=1, row=6)
+
+# Shuffle button
+custom_button = ttk.Button(windows, text="Shuffle", command=lambda: [shuffle()])
+custom_button.grid(column=2, row=7)
 
 windows.mainloop()
 
