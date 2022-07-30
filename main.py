@@ -1,7 +1,9 @@
 # mxGlass
 # Blackjack card counter (GUI)
  
-# TODO: add list item numbers in order
+# 30JUL2022
+# mxGlass
+# Fixed bug regarding log.insert()
 
 import tkinter as tk
 from tkinter import ttk
@@ -26,7 +28,7 @@ def clicked_neg():
 
 def add_log(x):
     global log
-    log.insert(1, x)
+    log.insert(0, x)
 
 
 windows = tk.Tk()
