@@ -13,11 +13,17 @@
 # the_BigMike_
 # Added number of cards and true count.
 
+# TODO: Make amount of decks variable.
+# TODO: Implement win/loss script into GUI (mxGlass). 
+# TODO: Determine formula/function to predict good bet amount (taking account of record, balance, count, etc.).
+# TODO: Maybe we link this to hardware? ... Think about it.
+
+# Import necessary libraries
 import tkinter as tk
 from tkinter import ttk
 from unicodedata import numeric
 
-# initialize variables
+# Initialize variables
 count = 0
 numCards = 0
 log = []
@@ -34,6 +40,7 @@ def deckInput():
 def trueCount():
     return round(count/(((52*numDecks)-numCards)/52))
 
+# Define when "clicked"
 def clicked(): # without event because I use `command=` instead of `bind`
     global count
     global numCards
@@ -64,10 +71,12 @@ def clicked_neg():
     label2.configure(text=f'Cards Played = {numCards}')
     label3.configure(text=f'True Count = {trueCount()}')
 
+# Logging
 def add_log(x):
     global log
     log.insert(0, x)
 
+# Shuffle and reset count
 def shuffle():
     global count
     global numCards
@@ -77,8 +86,7 @@ def shuffle():
     label2.configure(text=f'Cards Played = {numCards}')
     label3.configure(text=f'True Count = {trueCount()}')
 
-
-
+# GUI stuff below
 windows = tk.Tk()
 windows.title("")
 
