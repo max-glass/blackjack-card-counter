@@ -23,6 +23,14 @@ numCards = 0
 log = []
 numDecks = 8
 
+def deckInput():
+    global numDecks
+
+    inp = decksInput.get(1.0, "end-1c")
+    numDecks = int(inp)
+    decksLabel.configure(text=f'Number of decks: {numDecks}')
+    label3.configure(text=f'True Count = {trueCount()}')
+
 def trueCount():
     return round(count/(((52*numDecks)-numCards)/52))
 
@@ -140,6 +148,16 @@ custom_button.grid(column=2, row=6)
 # Shuffle button
 custom_button = ttk.Button(windows, text="Shuffle", command=lambda: [shuffle()])
 custom_button.grid(column=1, row=7)
+
+# Deck Input
+decksLabel = tk.Label(windows, text=f"Number of decks: {numDecks}")
+decksLabel.grid(column=0, row=8)
+decksInput = tk.Text(windows,
+                   height = 1,
+                   width = 5)
+decksInput.grid(column=0, row=9)
+custom_button = ttk.Button(windows, text="Update", command=lambda: [deckInput()])
+custom_button.grid(column=0, row=10)
 
 windows.mainloop()
 
