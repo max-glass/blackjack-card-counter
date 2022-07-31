@@ -74,8 +74,6 @@ def shuffle():
     label2.configure(text=f'Cards Played = {numCards}')
     label3.configure(text=f'True Count = {trueCount()}')
 
-
-
 windows = tk.Tk()
 windows.title("")
 
