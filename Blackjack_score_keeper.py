@@ -1,3 +1,6 @@
+# mxGlass
+# 07JUL2022
+# Added file to repo, began implementing win/loss.
 
 def main():
     global win
