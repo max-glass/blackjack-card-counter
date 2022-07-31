@@ -22,12 +22,26 @@
 import tkinter as tk
 from tkinter import ttk
 from unicodedata import numeric
+from 
+import os
+import subprocess
+import threading
 
 # Initialize variables
 count = 0
 numCards = 0
 log = []
 numDecks = 8
+
+# Win/loss
+# global win
+# global loss
+# global push
+# global diff
+# win = 0
+# loss = 0
+# push = 0
+# diff = 0
 
 # Define and calculate true count
 def trueCount():
@@ -78,6 +92,8 @@ def shuffle():
     label1.configure(text=f'Count = {count}')
     label2.configure(text=f'Cards Played = {numCards}')
     label3.configure(text=f'True Count = {trueCount()}')
+
+def 
 
 # GUI stuff below
 windows = tk.Tk()
