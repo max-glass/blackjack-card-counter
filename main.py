@@ -13,7 +13,10 @@
 # the_BigMike_
 # Added number of cards and true count.
 
-# TODO: Make amount of decks variable.
+# 31JUL2022
+# the_BigMike_
+# added veriable number of decks
+
 # TODO: Implement win/loss script into GUI (mxGlass). 
 # TODO: Determine formula/function to predict good bet amount (taking account of record, balance, count, etc.).
 # TODO: Maybe we link this to hardware? ... Think about it.
@@ -29,6 +32,7 @@ numCards = 0
 log = []
 numDecks = 8
 
+# Update number of decks
 def deckInput():
     global numDecks
 
@@ -37,6 +41,7 @@ def deckInput():
     decksLabel.configure(text=f'Number of decks: {numDecks}')
     label3.configure(text=f'True Count = {trueCount()}')
 
+# Calculate the true count
 def trueCount():
     return round(count/(((52*numDecks)-numCards)/52))
 
