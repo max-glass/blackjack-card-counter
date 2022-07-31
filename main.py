@@ -47,10 +47,10 @@ numDecks = 8
 cards = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"]
 cardsRemaining = [0,0,0,0,0,0,0,0,0,0,0,0,0]
 
+
 # Update number of decks
 def deckInput():
     global numDecks
-
 
 # Win/loss
 # global win
