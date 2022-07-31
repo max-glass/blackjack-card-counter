@@ -13,6 +13,11 @@
 # the_BigMike_
 # Added number of cards and true count.
 
+# TODO: Make amount of decks variable.
+# TODO: Implement win/loss script into GUI (mxGlass). 
+# TODO: Determine formula/function to predict good bet amount (taking account of record, balance, count, etc.).
+# TODO: Maybe we link this to hardware? ... Think about it.
+
 import tkinter as tk
 from tkinter import ttk
 from unicodedata import numeric
