@@ -15,7 +15,7 @@
 
 # 31JUL2022
 # the_BigMike_
-# added veriable number of decks
+# Added variable number of decks
 
 # TODO: Implement win/loss script into GUI (mxGlass). 
 # TODO: Determine formula/function to predict good bet amount (taking account of record, balance, count, etc.).
