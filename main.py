@@ -12,7 +12,6 @@
 # 30JUL2022
 # the_BigMike_
 # Added number of cards and true count.
-#test
 
 import tkinter as tk
 from tkinter import ttk
