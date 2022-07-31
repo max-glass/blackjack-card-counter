@@ -11,7 +11,7 @@
 
 # 30JUL2022
 # the_BigMike_
-# Added number of cards.
+# Added number of cards and true count.
 
 import tkinter as tk
 from tkinter import ttk
@@ -21,6 +21,10 @@ from unicodedata import numeric
 count = 0
 numCards = 0
 log = []
+numDecks = 8
+
+def trueCount():
+    return round(count/(((52*numDecks)-numCards)/52))
 
 def clicked(): # without event because I use `command=` instead of `bind`
     global count
@@ -31,6 +35,7 @@ def clicked(): # without event because I use `command=` instead of `bind`
 
     label1.configure(text=f'Count = {count}')
     label2.configure(text=f'Cards Played = {numCards}')
+    label3.configure(text=f'True Count = {trueCount()}')
 
 def clicked_null(): # without event because I use `command=` instead of `bind`
     global numCards
@@ -38,6 +43,7 @@ def clicked_null(): # without event because I use `command=` instead of `bind`
     numCards = numCards + 1
 
     label2.configure(text=f'Cards Played = {numCards}')
+    label3.configure(text=f'True Count = {trueCount()}')
 
 def clicked_neg():
     global count
@@ -48,6 +54,7 @@ def clicked_neg():
 
     label1.configure(text=f'Count = {count}')
     label2.configure(text=f'Cards Played = {numCards}')
+    label3.configure(text=f'True Count = {trueCount()}')
 
 def add_log(x):
     global log
@@ -60,6 +67,7 @@ def shuffle():
     numCards = 0
     label1.configure(text=f'Count = {count}')
     label2.configure(text=f'Cards Played = {numCards}')
+    label3.configure(text=f'True Count = {trueCount()}')
 
 
 
@@ -82,7 +90,10 @@ label1 = tk.Label(windows)
 label1.grid(column=0, row=1)
 
 label2 = tk.Label(windows)
-label2.grid(column=1, row=1)
+label2.grid(column=2, row=1)
+
+label3 = tk.Label(windows)
+label3.grid(column=1, row=1)
 
 # Plus cards
 custom_button = ttk.Button(windows, text="2", command=lambda: [clicked(), add_log("2")])
