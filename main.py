@@ -172,7 +172,7 @@ custom_button = ttk.Button(windows, text="Shuffle", command=lambda: [shuffle()])
 custom_button.grid(column=1, row=7)
 
 # New window
-newButton = ttk.Button(windows, text='Settings', command=settings)
+newButton = ttk.Button(windows, text='Win/Loss', command=settings)
 newButton.grid(row=7, column=0)
 
 windows.mainloop()
