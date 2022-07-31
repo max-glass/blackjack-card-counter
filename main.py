@@ -19,10 +19,14 @@
 # TODO: Maybe we link this to hardware? ... Think about it.
 
 # Import necessary libraries
+# External dependencies
 import tkinter as tk
-from tkinter import ttk
+from tkinter import Label, ttk
+from tkinter import messagebox
 from unicodedata import numeric
-from 
+# from Blackjack_score_keeper import main
+
+# System dependencies
 import os
 import subprocess
 import threading
@@ -43,7 +47,7 @@ numDecks = 8
 # push = 0
 # diff = 0
 
-# Define and calculate true count
+# Define and calculate true count (the_BigMike_)
 def trueCount():
     return round(count/(((52*numDecks)-numCards)/52))
 
@@ -93,7 +97,8 @@ def shuffle():
     label2.configure(text=f'Cards Played = {numCards}')
     label3.configure(text=f'True Count = {trueCount()}')
 
-def 
+def settings():
+    messagebox.showinfo('Settings', f' Settings Menu')
 
 # GUI stuff below
 windows = tk.Tk()
@@ -165,6 +170,10 @@ custom_button.grid(column=2, row=6)
 # Shuffle button
 custom_button = ttk.Button(windows, text="Shuffle", command=lambda: [shuffle()])
 custom_button.grid(column=1, row=7)
+
+# New window
+newButton = ttk.Button(windows, text='Settings', command=settings)
+newButton.grid(row=7, column=0)
 
 windows.mainloop()
 
