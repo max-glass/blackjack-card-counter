@@ -9,6 +9,10 @@
 # mxGlass
 # Added shuffle button.
 
+# 30JUL2022
+# the_BigMike_
+# Fixed spacing.
+
 import tkinter as tk
 from tkinter import ttk
 from unicodedata import numeric
