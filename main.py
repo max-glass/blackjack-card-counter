@@ -31,6 +31,8 @@ count = 0
 numCards = 0
 log = []
 numDecks = 8
+cards = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"]
+cardsRemaining = [0,0,0,0,0,0,0,0,0,0,0,0,0]
 
 # Update number of decks
 def deckInput():
@@ -40,6 +42,24 @@ def deckInput():
     numDecks = int(inp)
     decksLabel.configure(text=f'Number of decks: {numDecks}')
     label3.configure(text=f'True Count = {trueCount()}')
+    remaining()
+
+def remaining():
+    for i, card in enumerate(cards):
+        cardsRemaining[i] = 4*numDecks
+    remainingA.configure(text=f"A: {cardsRemaining[0]}")
+    remainingK.configure(text=f"K: {cardsRemaining[1]}")
+    remainingQ.configure(text=f"Q: {cardsRemaining[2]}")
+    remainingJ.configure(text=f"J: {cardsRemaining[3]}")
+    remaining10.configure(text=f"10: {cardsRemaining[4]}")
+    remaining9.configure(text=f"9: {cardsRemaining[5]}")
+    remaining8.configure(text=f"8: {cardsRemaining[6]}")
+    remaining7.configure(text=f"7: {cardsRemaining[7]}")
+    remaining6.configure(text=f"6: {cardsRemaining[8]}")
+    remaining5.configure(text=f"5: {cardsRemaining[9]}")
+    remaining4.configure(text=f"4: {cardsRemaining[10]}")
+    remaining2.configure(text=f"2: {cardsRemaining[12]}")
+    remaining3.configure(text=f"3: {cardsRemaining[11]}")
 
 # Calculate the true count
 def trueCount():
@@ -80,6 +100,46 @@ def clicked_neg():
 def add_log(x):
     global log
     log.insert(0, x)
+    match(x):
+        case "A":
+            cardsRemaining[0] = cardsRemaining[0]-1
+            remainingA.configure(text=f"A: {cardsRemaining[0]}")
+        case "K":
+            cardsRemaining[1] = cardsRemaining[1]-1
+            remainingK.configure(text=f"K: {cardsRemaining[1]}")
+        case "Q":
+            cardsRemaining[2] = cardsRemaining[2]-1
+            remainingQ.configure(text=f"Q: {cardsRemaining[2]}")
+        case "J":
+            cardsRemaining[3] = cardsRemaining[3]-1
+            remainingJ.configure(text=f"J: {cardsRemaining[3]}")
+        case "10":
+            cardsRemaining[4] = cardsRemaining[4]-1
+            remaining10.configure(text=f"10: {cardsRemaining[4]}")
+        case "9":
+            cardsRemaining[5] = cardsRemaining[5]-1
+            remaining9.configure(text=f"9: {cardsRemaining[5]}")
+        case "8":
+            cardsRemaining[6] = cardsRemaining[6]-1
+            remaining8.configure(text=f"8: {cardsRemaining[6]}")
+        case "7":
+            cardsRemaining[7] = cardsRemaining[7]-1
+            remaining7.configure(text=f"7: {cardsRemaining[7]}")
+        case "6":
+            cardsRemaining[8] = cardsRemaining[8]-1
+            remaining6.configure(text=f"6: {cardsRemaining[8]}")
+        case "5":
+            cardsRemaining[9] = cardsRemaining[9]-1
+            remaining5.configure(text=f"5: {cardsRemaining[9]}")
+        case "4":
+            cardsRemaining[10] = cardsRemaining[10]-1
+            remaining4.configure(text=f"4: {cardsRemaining[10]}")
+        case "3":
+            cardsRemaining[11] = cardsRemaining[11]-1
+            remaining3.configure(text=f"3: {cardsRemaining[11]}")
+        case "2":
+            cardsRemaining[12] = cardsRemaining[12]-1
+            remaining2.configure(text=f"2: {cardsRemaining[12]}")
 
 # Shuffle and reset count
 def shuffle():
@@ -90,6 +150,11 @@ def shuffle():
     label1.configure(text=f'Count = {count}')
     label2.configure(text=f'Cards Played = {numCards}')
     label3.configure(text=f'True Count = {trueCount()}')
+    remaining()
+
+# initiate the number of cards based on the number of decks
+for i, card in enumerate(cards):
+    cardsRemaining[i] = 4*numDecks
 
 # GUI stuff below
 windows = tk.Tk()
@@ -171,6 +236,34 @@ decksInput = tk.Text(windows,
 decksInput.grid(column=0, row=9)
 custom_button = ttk.Button(windows, text="Update", command=lambda: [deckInput()])
 custom_button.grid(column=0, row=10)
+
+# Number of cards remaining
+remainingA = tk.Label(windows, text=f"A: {cardsRemaining[0]}")
+remainingA.grid(column=6, row=2)
+remainingK = tk.Label(windows, text=f"K: {cardsRemaining[1]}")
+remainingK.grid(column=6, row=3)
+remainingQ = tk.Label(windows, text=f"Q: {cardsRemaining[2]}")
+remainingQ.grid(column=6, row=4)
+remainingJ = tk.Label(windows, text=f"J: {cardsRemaining[3]}")
+remainingJ.grid(column=6, row=5)
+remaining10 = tk.Label(windows, text=f"10: {cardsRemaining[4]}")
+remaining10.grid(column=6, row=6)
+remaining9 = tk.Label(windows, text=f"9: {cardsRemaining[5]}")
+remaining9.grid(column=6, row=7)
+remaining8 = tk.Label(windows, text=f"8: {cardsRemaining[6]}")
+remaining8.grid(column=6, row=8)
+remaining7 = tk.Label(windows, text=f"7: {cardsRemaining[7]}")
+remaining7.grid(column=6, row=9)
+remaining6 = tk.Label(windows, text=f"6: {cardsRemaining[8]}")
+remaining6.grid(column=7, row=2)
+remaining5 = tk.Label(windows, text=f"5: {cardsRemaining[9]}")
+remaining5.grid(column=7, row=3)
+remaining4 = tk.Label(windows, text=f"4: {cardsRemaining[10]}")
+remaining4.grid(column=7, row=4)
+remaining3 = tk.Label(windows, text=f"3: {cardsRemaining[11]}")
+remaining3.grid(column=7, row=5)
+remaining2 = tk.Label(windows, text=f"2: {cardsRemaining[12]}")
+remaining2.grid(column=7, row=6)
 
 windows.mainloop()
 
