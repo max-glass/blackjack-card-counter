@@ -15,35 +15,35 @@ from unicodedata import numeric
 
 # initialize variables
 count = 0
-num_cards = 0
+numCards = 0
 log = []
 
 def clicked(): # without event because I use `command=` instead of `bind`
     global count
-    global num_cards
+    global numCards
 
     count = count + 1
-    num_cards = num_cards + 1
+    numCards = numCards + 1
 
     label1.configure(text=f'Count = {count}')
-    label2.configure(text=f'Cards Played = {num_cards}')
+    label2.configure(text=f'Cards Played = {numCards}')
 
 def clicked_null(): # without event because I use `command=` instead of `bind`
-    global num_cards
+    global numCards
 
-    num_cards = num_cards + 1
+    numCards = numCards + 1
 
-    label2.configure(text=f'Cards Played = {num_cards}')
+    label2.configure(text=f'Cards Played = {numCards}')
 
 def clicked_neg():
     global count
-    global num_cards
+    global numCards
 
     count = count - 1
-    num_cards = num_cards + 1
+    numCards = numCards + 1
 
     label1.configure(text=f'Count = {count}')
-    label2.configure(text=f'Cards Played = {num_cards}')
+    label2.configure(text=f'Cards Played = {numCards}')
 
 def add_log(x):
     global log
@@ -51,11 +51,11 @@ def add_log(x):
 
 def shuffle():
     global count
-    global num_cards
+    global numCards
     count = 0
-    num_cards = 0
+    numCards = 0
     label1.configure(text=f'Count = {count}')
-    label2.configure(text=f'Cards Played = {num_cards}')
+    label2.configure(text=f'Cards Played = {numCards}')
 
 
 
