@@ -1,6 +1,3 @@
-
-
-
 def main():
     global win
     global loss
@@ -24,7 +21,7 @@ def main():
         print("\n")
         print("Record (win, loss, push):",win,"-",loss,"-",push)
         print("\n")
-        print("balance:",balance)
+        print("Balance:",balance)
         print("\n")
         print("Session P/L:",diff)
 

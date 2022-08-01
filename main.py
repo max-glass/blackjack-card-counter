@@ -25,7 +25,6 @@
 # BB31420
 # Fixed balance and push keeper.
 
-
 # TODO: Implement win/loss script into GUI (mxGlass). 
 # TODO: Determine formula/function to predict good bet amount (taking account of record, profit, count, etc.).
 # TODO: Maybe we link this to hardware? ... Think about it.
@@ -67,8 +66,6 @@ cardsRemaining = [0,0,0,0,0,0,0,0,0,0,0,0,0]
 def deckInput():
     global numDecks
 
-# Define and calculate true count (the_BigMike_)
-
     inp = decksInput.get(1.0, "end-1c")
     numDecks = int(inp)
     decksLabel.configure(text=f'Number of decks: {numDecks}')
@@ -93,7 +90,6 @@ def remaining():
     remaining3.configure(text=f"3: {cardsRemaining[11]}")
 
 # Calculate the true count
-
 def trueCount():
     return round(count/(((52*numDecks)-numCards)/52))
 
@@ -234,9 +230,7 @@ def win_loss():
             balance = profit + int(tcash)
 
         if trecord == "p":
-            push = push + 1
-            
-                
+            push = push + 1             
         
         tk.Label(newWindow, text=f"Record (win, loss, push):{win} - {loss} - {push}").grid(row=4)
         tk.Label(newWindow, text=f"Balance: {balance}").grid(row=5)
