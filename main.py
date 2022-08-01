@@ -60,12 +60,10 @@ cardsRemaining = [0,0,0,0,0,0,0,0,0,0,0,0,0]
 # push = 0
 # diff = 0
 
+# Define and calculate true count (the_BigMike_)
 # Update number of decks
 def deckInput():
     global numDecks
-
-# Define and calculate true count (the_BigMike_)
-
     inp = decksInput.get(1.0, "end-1c")
     numDecks = int(inp)
     decksLabel.configure(text=f'Number of decks: {numDecks}')
@@ -90,7 +88,6 @@ def remaining():
     remaining3.configure(text=f"3: {cardsRemaining[11]}")
 
 # Calculate the true count
-
 def trueCount():
     return round(count/(((52*numDecks)-numCards)/52))
 
