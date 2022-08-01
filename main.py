@@ -21,9 +21,13 @@
 # the_BigMike_
 # Added variable number of decks
 
+# 31JUL2022
+# BB31420
+# Fixed balance and push keeper.
+
 
 # TODO: Implement win/loss script into GUI (mxGlass). 
-# TODO: Determine formula/function to predict good bet amount (taking account of record, balance, count, etc.).
+# TODO: Determine formula/function to predict good bet amount (taking account of record, profit, count, etc.).
 # TODO: Maybe we link this to hardware? ... Think about it.
 
 # Import necessary libraries
@@ -191,18 +195,24 @@ def win_loss():
     global push
     global diff
     global cash
+    global profit
+    global balance
     cash = 0
     win = 0
     loss = 0
     push = 0
     diff = 0
-    
+    profit = 0
+    balance = 0
+
     def output():
         global win
         global loss
         global push
         global diff
-      
+        global profit
+        global balance
+
         tcash = int(cash.get())
         trecord = str(record.get())
         tbet_amt = int(bet_amt.get())
@@ -210,17 +220,26 @@ def win_loss():
         if trecord == "w":
             win = win + 1
             int(tbet_amt)
-            tcash = int(tcash) + int(tbet_amt)
+            int(tcash)
             diff = diff + int(tbet_amt)
+            profit = profit + int(tbet_amt)
+            balance = profit + int(tcash)
         
         if trecord == "l":
             loss = loss + 1
             int(tbet_amt)
-            tcash = int(tcash) - int(tbet_amt)
+            int(tcash)
             diff = diff - int(tbet_amt)
+            profit = profit - int(tbet_amt)
+            balance = profit + int(tcash)
+
+        if trecord == "p":
+            push = push + 1
+            
+                
         
         tk.Label(newWindow, text=f"Record (win, loss, push):{win} - {loss} - {push}").grid(row=4)
-        tk.Label(newWindow, text=f"Balance: {tcash}").grid(row=5)
+        tk.Label(newWindow, text=f"Balance: {balance}").grid(row=5)
         tk.Label(newWindow, text=f"Session P/L:: {diff}").grid(row=6)
 
     tk.Label(newWindow, text="What is your starting amount?").grid(row=0)

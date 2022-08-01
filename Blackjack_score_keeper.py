@@ -1,13 +1,20 @@
 
+
+
 def main():
     global win
     global loss
     global push
     global diff
+    global profit
+    global balance
+
     win = 0
     loss = 0
     push = 0
     diff = 0
+    profit = 0
+    balance = 0
 
     print("\n")
     cash = input("What is your starting amount? ")
@@ -17,7 +24,7 @@ def main():
         print("\n")
         print("Record (win, loss, push):",win,"-",loss,"-",push)
         print("\n")
-        print("Balance:",cash)
+        print("balance:",balance)
         print("\n")
         print("Session P/L:",diff)
 
@@ -29,8 +36,10 @@ def main():
             win = win + 1
             bet_amt = input("Was the bet amount? ")
             int(bet_amt)
-            cash = int(cash) + int(bet_amt)
+            int(cash)
             diff = diff + int(bet_amt)
+            profit = profit + int(bet_amt)
+            balance = profit + int(cash)
             output()
 
         if record == "l":
@@ -38,8 +47,10 @@ def main():
             bet_amt = input("Was the bet amount? ")
 
             int(bet_amt)
-            cash = int(cash) - int(bet_amt)
+            int(cash)
             diff = diff - int(bet_amt)
+            profit = profit - int(bet_amt)
+            balance = profit + int(cash)
             output()
 
         if record == "stats":
@@ -53,6 +64,7 @@ def main():
             output()
             
         if record == "p":
+            push = push +1
             #bet_amt = input("Was the bet amount? ")
             #cash = int(cash) + int(bet_amt)
             output()
