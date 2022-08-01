@@ -14,17 +14,31 @@
 # Added number of cards and true count.
 
 # 31JUL2022
+# kilixn
+# Added win/loss score keeper.
+
+# 31JUL2022
 # the_BigMike_
-# added veriable number of decks
+# Added variable number of decks
+
 
 # TODO: Implement win/loss script into GUI (mxGlass). 
 # TODO: Determine formula/function to predict good bet amount (taking account of record, balance, count, etc.).
+# TODO: Clear win/loss fields after clicking "calculate."
 # TODO: Maybe we link this to hardware? ... Think about it.
 
 # Import necessary libraries
+# External dependencies
 import tkinter as tk
-from tkinter import ttk
+from tkinter import Label, ttk, messagebox
+from tkinter import *
 from unicodedata import numeric
+# from Blackjack_score_keeper import main
+
+# System dependencies
+import os
+import subprocess
+import threading
 
 # Initialize variables
 count = 0
@@ -34,10 +48,22 @@ numDecks = 8
 cards = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"]
 cardsRemaining = [0,0,0,0,0,0,0,0,0,0,0,0,0]
 
+
+
+# Win/loss
+# global win
+# global loss
+# global push
+# global diff
+# win = 0
+# loss = 0
+# push = 0
+# diff = 0
+
+# Define and calculate true count (the_BigMike_)
 # Update number of decks
 def deckInput():
     global numDecks
-
     inp = decksInput.get(1.0, "end-1c")
     numDecks = int(inp)
     decksLabel.configure(text=f'Number of decks: {numDecks}')
@@ -156,6 +182,60 @@ def shuffle():
 for i, card in enumerate(cards):
     cardsRemaining[i] = 4*numDecks
 
+def win_loss():
+    newWindow = Toplevel(windows)
+    global win
+    global loss
+    global push
+    global diff
+    global cash
+    cash = 0
+    win = 0
+    loss = 0
+    push = 0
+    diff = 0
+    
+    def output():
+        global win
+        global loss
+        global push
+        global diff
+      
+        tcash = int(cash.get())
+        trecord = str(record.get())
+        tbet_amt = int(bet_amt.get())
+
+        if trecord == "w":
+            win = win + 1
+            int(tbet_amt)
+            tcash = int(tcash) + int(tbet_amt)
+            diff = diff + int(tbet_amt)
+        
+        if trecord == "l":
+            loss = loss + 1
+            int(tbet_amt)
+            tcash = int(tcash) - int(tbet_amt)
+            diff = diff - int(tbet_amt)
+        
+        tk.Label(newWindow, text=f"Record (win, loss, push):{win} - {loss} - {push}").grid(row=4)
+        tk.Label(newWindow, text=f"Balance: {tcash}").grid(row=5)
+        tk.Label(newWindow, text=f"Session P/L:: {diff}").grid(row=6)
+
+    tk.Label(newWindow, text="What is your starting amount?").grid(row=0)
+    cash = tk.Entry(newWindow)
+    cash.grid(row=0, column=1)
+
+    tk.Label(newWindow, text="Was the last hand won or lost?").grid(row=1)
+    record = tk.Entry(newWindow)
+    record.grid(row=1, column=1)
+
+    tk.Label(newWindow, text="What was the bet amount ?").grid(row=2)
+    bet_amt = tk.Entry(newWindow)
+    bet_amt.grid(row=2, column=1)
+
+    custom_button = tk.Button(newWindow, text="calculate", command=output)
+    custom_button.grid(row = 3, column=0)    
+
 # GUI stuff below
 windows = tk.Tk()
 windows.title("")
@@ -227,12 +307,15 @@ custom_button.grid(column=2, row=6)
 custom_button = ttk.Button(windows, text="Shuffle", command=lambda: [shuffle()])
 custom_button.grid(column=1, row=7)
 
+
+# Win/Loss
+newButton = ttk.Button(windows, text='Win/Loss', command=win_loss)
+newButton.grid(row=11, column=0)
+
 # Deck Input
 decksLabel = tk.Label(windows, text=f"Number of decks: {numDecks}")
 decksLabel.grid(column=0, row=8)
-decksInput = tk.Text(windows,
-                   height = 1,
-                   width = 5)
+decksInput = tk.Text(windows, height = 1, width = 5)
 decksInput.grid(column=0, row=9)
 custom_button = ttk.Button(windows, text="Update", command=lambda: [deckInput()])
 custom_button.grid(column=0, row=10)
@@ -266,4 +349,3 @@ remaining2 = tk.Label(windows, text=f"2: {cardsRemaining[12]}")
 remaining2.grid(column=7, row=6)
 
 windows.mainloop()
-
