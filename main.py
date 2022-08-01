@@ -24,6 +24,7 @@
 
 # TODO: Implement win/loss script into GUI (mxGlass). 
 # TODO: Determine formula/function to predict good bet amount (taking account of record, balance, count, etc.).
+# TODO: Clear win/loss fields after clicking "calculate."
 # TODO: Maybe we link this to hardware? ... Think about it.
 
 # Import necessary libraries
