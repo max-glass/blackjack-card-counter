@@ -358,13 +358,13 @@ custom_button.grid(column=0, row=10)
 # Dealer Input
 dealerLabel = tk.Label(windows, text=f"Dealer Card:", height=1)
 dealerLabel.grid(column=0, row=12)
-dealerInput = tk.Text(windows, height = 1, width = 5)
+dealerInput = tk.Text(windows, height = 1, width = 10)
 dealerInput.grid(column=0, row=13)
 
 # Player Input
 playerLabel = tk.Label(windows, text=f"Player Cards")
 playerLabel.grid(column=1, row=12)
-playerInput = tk.Text(windows, height = 1, width = 5)
+playerInput = tk.Text(windows, height = 1, width = 10)
 playerInput.grid(column=1, row=13)
 custom_button = ttk.Button(windows, text="Update", command=lambda: [strategy()])
 custom_button.grid(column=1, row=14)
