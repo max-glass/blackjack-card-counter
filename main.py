@@ -78,7 +78,7 @@ def deckInput():
     remaining()
 
 def strategy():
-    playerValue = [0,0]
+    playerValue = []
     soft = False
     player = playerInput.get(1.0, "end-1c").split(',')
     dealer = dealerInput.get(1.0, "end-1c")
@@ -92,13 +92,13 @@ def strategy():
     for i, card in enumerate(player):
         match(player[i].lower()):
             case "a":
-                playerValue[i] = 11
+                playerValue.append(11)
                 soft = True
             case "k" | "q" | 'j':
-                playerValue[i] = 10
+                playerValue.append(10)
             case _:
-                playerValue[i] = int(player[i])
-    label4.configure(text=f'What to do: {basic_strategy(playerValue[0]+playerValue[1], dealerValue, soft)}')
+                playerValue.append(int(player[i]))
+    label4.configure(text=f'What to do: {basic_strategy(sum(playerValue), dealerValue, soft)}')
     
 
 #calculates the number of remaining cards for each value
