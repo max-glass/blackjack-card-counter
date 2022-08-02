@@ -31,6 +31,8 @@
 
 # Import necessary libraries
 # External dependencies
+import enum
+from re import T
 import tkinter as tk
 from tkinter import Label, ttk, messagebox
 from tkinter import *
@@ -42,6 +44,8 @@ from unicodedata import numeric
 import os
 import subprocess
 import threading
+
+from strategy import basic_strategy
 
 # Initialize variables
 count = 0
@@ -74,8 +78,27 @@ def deckInput():
     remaining()
 
 def strategy():
-    player = playerInput.get(1.0, "end-1c")
+    playerValue = [0,0]
+    soft = False
+    player = playerInput.get(1.0, "end-1c").split(',')
     dealer = dealerInput.get(1.0, "end-1c")
+    match(dealer.lower()):
+        case "a":
+            dealerValue = 1
+        case "k" | "q" | 'j':
+            dealerValue = 10
+        case _:
+            dealerValue = int(dealer)
+    for i, card in enumerate(player):
+        match(player[i].lower()):
+            case "a":
+                playerValue[i] = 11
+                soft = True
+            case "k" | "q" | 'j':
+                playerValue[i] = 10
+            case _:
+                playerValue[i] = int(player[i])
+    label4.configure(text=f'What to do: {basic_strategy(playerValue[0]+playerValue[1], dealerValue, soft)}')
     
 
 #calculates the number of remaining cards for each value
@@ -333,7 +356,7 @@ custom_button = ttk.Button(windows, text="Update", command=lambda: [deckInput()]
 custom_button.grid(column=0, row=10)
 
 # Dealer Input
-dealerLabel = tk.Label(windows, text=f"Dealer Cards:", height=1)
+dealerLabel = tk.Label(windows, text=f"Dealer Card:", height=1)
 dealerLabel.grid(column=0, row=12)
 dealerInput = tk.Text(windows, height = 1, width = 5)
 dealerInput.grid(column=0, row=13)
