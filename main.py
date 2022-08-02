@@ -276,10 +276,10 @@ label = tk.Label(windows, text="Blackjack card counter")
 label.grid(column=0, row=0)
 
 logLabel = tk.Label(windows, text="Card log:")
-logLabel.grid(column=3, row=10)
+logLabel.grid(column=1, row=10)
 
-log = tk.Listbox(width=3)
-log.grid(column=3, row=11)
+log = tk.Listbox()
+log.grid(column=1, row=11)
 
 label = tk.Label(windows, text="")
 label.grid(column=4, row=0)
