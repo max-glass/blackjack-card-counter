@@ -216,7 +216,6 @@ def win_loss():
         global push
         global diff
         global cash
-        
       
         if(win+loss+push == 0):
             cash = int(initialCash.get())
