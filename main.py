@@ -213,7 +213,7 @@ def win_loss():
         trecord = str(record.get())
         tbet_amt = int(bet_amt.get())
 
-        if record == "w":
+        if trecord == "w":
             win = win + 1
             cash = int(cash) + int(tbet_amt)
             diff = diff + int(tbet_amt)
