@@ -15,11 +15,11 @@ def main():
 
     def output():
         print("\n")
-        print("Record (win, loss, push):",win,"-",loss,"-",push)
+        print("Record (win, loss, push)", " ",win,"-",loss,"-",push)
         print("\n")
         print("Balance:",cash)
         print("\n")
-        print("Session P/L:",diff)
+        print("Session P/L",diff)
 
     while 1 == 1:
         print("_____________________________________")
@@ -36,11 +36,17 @@ def main():
         if record == "l":
             loss = loss + 1
             bet_amt = input("Was the bet amount? ")
-
             int(bet_amt)
-            cash = int(cash) - int(bet_amt)
-            diff = diff - int(bet_amt)
+            cash = cash - bet_amt
+            diff = diff - bet_amt
             output()
+
+        if record == "p":
+            #bet_amt = input("Was the bet amount? ")
+            cash = cash + bet_amt
+            push = push + 1
+            output()
+            continue
 
         if record == "stats":
             output()
@@ -51,11 +57,5 @@ def main():
             int(adj)
             cash = int(cash) + int(adj)
             output()
-            
-        if record == "p":
-            #bet_amt = input("Was the bet amount? ")
-            #cash = int(cash) + int(bet_amt)
-            output()
-            continue
 
 main()
