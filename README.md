@@ -9,6 +9,14 @@ Take note of TODOs in main.py.
 
 Thank you to our contributors!
 
+
+Check out the stream/community!
+
+twitch.tv/mxGlass
+
+https://discord.gg/T6yGFXgWhY
+
+
 ## Change Log
 * July 2022
   * July 30
@@ -21,3 +29,4 @@ Thank you to our contributors!
 * August 2022
   * Aug 1
     * the_BigMike_ - added strategy, tells user to hit/stand/double using basic strategy
+
