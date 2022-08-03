@@ -1,33 +1,4 @@
-# mxGlass
 # Blackjack card counter (GUI)
- 
-# 30JUL2022
-# mxGlass
-# Fixed bug regarding log.insert().
-
-# 30JUL2022
-# mxGlass
-# Added shuffle button.
-
-# 30JUL2022
-# the_BigMike_
-# Added number of cards and true count.
-
-# 31JUL2022
-# kilixn
-# Added win/loss score keeper.
-
-# 31JUL2022
-# the_BigMike_
-# Added variable number of decks
-
-
-# TODO: Implement win/loss script into GUI (mxGlass).
-# TODO: Make font bigger on GUI.
-# TODO: Determine formula/function to predict good bet amount (taking account of record, balance, count, etc.).
-# TODO: Clear win/loss fields after clicking "calculate."
-# TODO: Maybe we link this to hardware? ... Think about it.
-
 
 # Import necessary libraries
 # External dependencies
