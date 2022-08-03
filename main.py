@@ -32,9 +32,12 @@
 
 # Import necessary libraries
 # External dependencies
+import enum
+from re import T
 import tkinter as tk
 from tkinter import Label, ttk, messagebox
 from tkinter import *
+from turtle import width
 from unicodedata import numeric
 # from Blackjack_score_keeper import main
 
@@ -42,6 +45,8 @@ from unicodedata import numeric
 import os
 import subprocess
 import threading
+
+from strategy import basic_strategy
 
 # Initialize variables
 count = 0
@@ -73,6 +78,31 @@ def deckInput():
     label3.configure(text=f'True Count = {trueCount()}')
     remaining()
 
+def strategy():
+    playerValue = []
+    soft = False
+    player = playerInput.get(1.0, "end-1c").split(',')
+    dealer = dealerInput.get(1.0, "end-1c")
+    match(dealer.lower()):
+        case "a":
+            dealerValue = 1
+        case "k" | "q" | 'j':
+            dealerValue = 10
+        case _:
+            dealerValue = int(dealer)
+    for i, card in enumerate(player):
+        match(player[i].lower()):
+            case "a":
+                playerValue.append(11)
+                soft = True
+            case "k" | "q" | 'j':
+                playerValue.append(10)
+            case _:
+                playerValue.append(int(player[i]))
+    label4.configure(text=f'What to do: {basic_strategy(sum(playerValue), dealerValue, soft)}')
+    
+
+#calculates the number of remaining cards for each value
 def remaining():
     for i, card in enumerate(cards):
         cardsRemaining[i] = 4*numDecks
@@ -264,6 +294,9 @@ label2.grid(column=2, row=1)
 label3 = tk.Label(windows)
 label3.grid(column=1, row=1)
 
+label4 = tk.Label(windows, text="What to do: ")
+label4.grid(column=2, row=12)
+
 # Plus cards
 custom_button = ttk.Button(windows, text="2", command=lambda: [clicked(), add_log("2")])
 custom_button.grid(column=0, row=2)
@@ -323,32 +356,46 @@ decksInput.grid(column=0, row=9)
 custom_button = ttk.Button(windows, text="Update", command=lambda: [deckInput()])
 custom_button.grid(column=0, row=10)
 
+# Dealer Input
+dealerLabel = tk.Label(windows, text=f"Dealer Card:", height=1)
+dealerLabel.grid(column=0, row=12)
+dealerInput = tk.Text(windows, height = 1, width = 10)
+dealerInput.grid(column=0, row=13)
+
+# Player Input
+playerLabel = tk.Label(windows, text=f"Player Cards")
+playerLabel.grid(column=1, row=12)
+playerInput = tk.Text(windows, height = 1, width = 10)
+playerInput.grid(column=1, row=13)
+custom_button = ttk.Button(windows, text="Update", command=lambda: [strategy()])
+custom_button.grid(column=1, row=14)
+
 # Number of cards remaining
 remainingA = tk.Label(windows, text=f"A: {cardsRemaining[0]}")
-remainingA.grid(column=6, row=2)
+remainingA.grid(column=3, row=2)
 remainingK = tk.Label(windows, text=f"K: {cardsRemaining[1]}")
-remainingK.grid(column=6, row=3)
+remainingK.grid(column=3, row=3)
 remainingQ = tk.Label(windows, text=f"Q: {cardsRemaining[2]}")
-remainingQ.grid(column=6, row=4)
+remainingQ.grid(column=3, row=4)
 remainingJ = tk.Label(windows, text=f"J: {cardsRemaining[3]}")
-remainingJ.grid(column=6, row=5)
+remainingJ.grid(column=3, row=5)
 remaining10 = tk.Label(windows, text=f"10: {cardsRemaining[4]}")
-remaining10.grid(column=6, row=6)
+remaining10.grid(column=3, row=6)
 remaining9 = tk.Label(windows, text=f"9: {cardsRemaining[5]}")
-remaining9.grid(column=6, row=7)
+remaining9.grid(column=3, row=7)
 remaining8 = tk.Label(windows, text=f"8: {cardsRemaining[6]}")
-remaining8.grid(column=6, row=8)
+remaining8.grid(column=3, row=8)
 remaining7 = tk.Label(windows, text=f"7: {cardsRemaining[7]}")
-remaining7.grid(column=6, row=9)
+remaining7.grid(column=3, row=9)
 remaining6 = tk.Label(windows, text=f"6: {cardsRemaining[8]}")
-remaining6.grid(column=7, row=2)
+remaining6.grid(column=4, row=2)
 remaining5 = tk.Label(windows, text=f"5: {cardsRemaining[9]}")
-remaining5.grid(column=7, row=3)
+remaining5.grid(column=4, row=3)
 remaining4 = tk.Label(windows, text=f"4: {cardsRemaining[10]}")
-remaining4.grid(column=7, row=4)
+remaining4.grid(column=4, row=4)
 remaining3 = tk.Label(windows, text=f"3: {cardsRemaining[11]}")
-remaining3.grid(column=7, row=5)
+remaining3.grid(column=4, row=5)
 remaining2 = tk.Label(windows, text=f"2: {cardsRemaining[12]}")
-remaining2.grid(column=7, row=6)
+remaining2.grid(column=4, row=6)
 
 windows.mainloop()
