@@ -24,20 +24,9 @@ count = 0
 numCards = 0
 log = []
 numDecks = 6
-cards = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"]
-cardsRemaining = [0,0,0,0,0,0,0,0,0,0,0,0,0]
-
-
-
-# Win/loss
-# global win
-# global loss
-# global push
-# global diff
-# win = 0
-# loss = 0
-# push = 0
-# diff = 0
+cards = ["A", "K", "Q", "J", "10", "9", "8", 
+         "7", "6", "5", "4", "3", "2"]
+cardsRemaining = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 # Define and calculate true count (the_BigMike_)
 # Update number of decks
@@ -199,48 +188,10 @@ def win_loss():
     loss = 0
     push = 0
     diff = 0
-    
-    def output():
-        global cash
-        cash = 0
-        global win
-        global loss
-        global push
-        global diff
-      
-        tcash = cash.get()
-        trecord = str(record.get())
-        tbet_amt = int(bet_amt.get())
-
-        if record == "w":
-            win = win + 1
-            bet_amt = input("Was the bet amount? ")
-            int(bet_amt)
-            cash = int(cash) + int(bet_amt)
-            diff = diff + int(bet_amt)
-            output()
-
-        if record == "l":
-            loss = loss + 1
-            bet_amt = input("Was the bet amount? ")
-            int(bet_amt)
-            cash = cash - bet_amt
-            diff = diff - bet_amt
-            output()
-
-        if record == "p":
-            #bet_amt = input("Was the bet amount? ")
-            cash = cash + bet_amt
-            push = push + 1
-            output()
-        
-        tk.Label(newWindow, text=f"Record (win, loss, push): {win} - {loss} - {push}").grid(row=4)
-        tk.Label(newWindow, text=f"Balance: {tcash}").grid(row=5)
-        tk.Label(newWindow, text=f"Session P/L: {diff}").grid(row=6)
 
     tk.Label(newWindow, text="What is your starting amount?").grid(row=0)
-    cash = tk.Entry(newWindow)
-    cash.grid(row=0, column=1)
+    initialCash = tk.Entry(newWindow)
+    initialCash.grid(row=0, column=1)
 
     tk.Label(newWindow, text="Was the last hand won or lost?").grid(row=1)
     record = tk.Entry(newWindow)
@@ -249,6 +200,37 @@ def win_loss():
     tk.Label(newWindow, text="What was the bet amount ?").grid(row=2)
     bet_amt = tk.Entry(newWindow)
     bet_amt.grid(row=2, column=1)
+
+    def output():
+        global cash
+        global win
+        global loss
+        global push
+        global diff
+        global cash
+      
+        if(win+loss+push == 0):
+            cash = int(initialCash.get())
+        trecord = str(record.get())
+        tbet_amt = int(bet_amt.get())
+
+        if trecord == "w":
+            win = win + 1
+            cash = int(cash) + int(tbet_amt)
+            diff = diff + int(tbet_amt)
+        
+        if trecord == "l":
+            loss = loss + 1
+            int(tbet_amt)
+            cash = int(cash) - int(tbet_amt)
+            diff = diff - int(tbet_amt)
+        
+        if trecord == "p":
+            push = push + 1
+        
+        tk.Label(newWindow, text=f"Record (win, loss, push): {win} - {loss} - {push}").grid(row=4)
+        tk.Label(newWindow, text=f"Balance: {cash}").grid(row=5)
+        tk.Label(newWindow, text=f"Session P/L: {diff}").grid(row=6)
 
     custom_button = tk.Button(newWindow, text="calculate", command=output)
     custom_button.grid(row = 3, column=0)    
@@ -263,7 +245,7 @@ label.grid(column=0, row=0)
 logLabel = tk.Label(windows, text="Card log:")
 logLabel.grid(column=1, row=10)
 
-log = tk.Listbox()
+log = tk.Listbox(windows)
 log.grid(column=1, row=11)
 
 label = tk.Label(windows, text="")
