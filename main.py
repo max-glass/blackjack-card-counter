@@ -27,18 +27,6 @@ numDecks = 6
 cards = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"]
 cardsRemaining = [0,0,0,0,0,0,0,0,0,0,0,0,0]
 
-
-
-# Win/loss
-# global win
-# global loss
-# global push
-# global diff
-# win = 0
-# loss = 0
-# push = 0
-# diff = 0
-
 # Define and calculate true count (the_BigMike_)
 # Update number of decks
 def deckInput():
@@ -214,17 +202,12 @@ def win_loss():
 
     def output():
         global cash
-        cash = 0
         global win
         global loss
         global push
         global diff
         global cash
-<<<<<<< HEAD
       
-=======
-
->>>>>>> d4b71a98f8eea519b00a43f9a56bb3cad50f751d
         if(win+loss+push == 0):
             cash = int(initialCash.get())
         trecord = str(record.get())
@@ -232,7 +215,6 @@ def win_loss():
 
         if record == "w":
             win = win + 1
-
             cash = int(cash) + int(tbet_amt)
             diff = diff + int(tbet_amt)
         
