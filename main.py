@@ -23,7 +23,7 @@ from strategy import basic_strategy
 count = 0
 numCards = 0
 log = []
-numDecks = 8
+numDecks = 6
 cards = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"]
 cardsRemaining = [0,0,0,0,0,0,0,0,0,0,0,0,0]
 
@@ -43,6 +43,7 @@ cardsRemaining = [0,0,0,0,0,0,0,0,0,0,0,0,0]
 # Update number of decks
 def deckInput():
     global numDecks
+    # Enter number of decks
     inp = decksInput.get(1.0, "end-1c")
     numDecks = int(inp)
     decksLabel.configure(text=f'Number of decks: {numDecks}')
@@ -200,30 +201,42 @@ def win_loss():
     diff = 0
     
     def output():
+        global cash
+        cash = 0
         global win
         global loss
         global push
         global diff
       
-        tcash = int(cash.get())
+        tcash = cash.get()
         trecord = str(record.get())
         tbet_amt = int(bet_amt.get())
 
-        if trecord == "w":
+        if record == "w":
             win = win + 1
-            int(tbet_amt)
-            tcash = int(tcash) + int(tbet_amt)
-            diff = diff + int(tbet_amt)
-        
-        if trecord == "l":
+            bet_amt = input("Was the bet amount? ")
+            int(bet_amt)
+            cash = int(cash) + int(bet_amt)
+            diff = diff + int(bet_amt)
+            output()
+
+        if record == "l":
             loss = loss + 1
-            int(tbet_amt)
-            tcash = int(tcash) - int(tbet_amt)
-            diff = diff - int(tbet_amt)
+            bet_amt = input("Was the bet amount? ")
+            int(bet_amt)
+            cash = cash - bet_amt
+            diff = diff - bet_amt
+            output()
+
+        if record == "p":
+            #bet_amt = input("Was the bet amount? ")
+            cash = cash + bet_amt
+            push = push + 1
+            output()
         
-        tk.Label(newWindow, text=f"Record (win, loss, push):{win} - {loss} - {push}").grid(row=4)
+        tk.Label(newWindow, text=f"Record (win, loss, push): {win} - {loss} - {push}").grid(row=4)
         tk.Label(newWindow, text=f"Balance: {tcash}").grid(row=5)
-        tk.Label(newWindow, text=f"Session P/L:: {diff}").grid(row=6)
+        tk.Label(newWindow, text=f"Session P/L: {diff}").grid(row=6)
 
     tk.Label(newWindow, text="What is your starting amount?").grid(row=0)
     cash = tk.Entry(newWindow)
