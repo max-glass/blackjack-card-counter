@@ -24,8 +24,9 @@ count = 0
 numCards = 0
 log = []
 numDecks = 6
-cards = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"]
-cardsRemaining = [0,0,0,0,0,0,0,0,0,0,0,0,0]
+cards = ["A", "K", "Q", "J", "10", "9", "8", 
+         "7", "6", "5", "4", "3", "2"]
+cardsRemaining = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 # Define and calculate true count (the_BigMike_)
 # Update number of decks
