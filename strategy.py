@@ -18,7 +18,7 @@ def basic_strategy(player_total, dealer_value, soft):
             return 'hit'
         return 'double'
     if soft:
-        #we only double soft 12 because there's no splitting
+        # We only double soft 12 because there's no splitting
         if player_total in [12, 13, 14]:
             if dealer_value in [5, 6]:
                 return 'double'
