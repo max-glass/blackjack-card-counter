@@ -1,8 +1,9 @@
-def basic_strategy(player_total, dealer_value, soft):
-    """ This is a simple implementation of Blackjack's
-        basic strategy. It is used to recommend actions
-        for the player. """
 
+# This is a simple implementation of Blackjack's
+# basic strategy. It is used to recommend actions
+# for the player.
+
+def basic_strategy(player_total, dealer_value, soft):
     if 4 <= player_total <= 8:
         return 'hit'
     if player_total == 9:
