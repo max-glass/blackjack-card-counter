@@ -37,5 +37,7 @@ https://discord.gg/T6yGFXgWhY
 * August 2022
   * Aug 1
     * the_BigMike_ - Added strategy, tells user to hit/stand/double using basic strategy.
-
-
+  * Aug 2
+    * the_BigMike_ - Resolved Win/Loss bug
+  * Aug 4
+    * the_BigMike_ - Refactored code to conformto Python best practices
