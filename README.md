@@ -40,4 +40,4 @@ https://discord.gg/T6yGFXgWhY
   * Aug 2
     * the_BigMike_ - Resolved Win/Loss bug
   * Aug 4
-    * the_BigMike_ - Refactored code to conformto Python best practices
+    * the_BigMike_ - Refactored code to conform to Python best practices
