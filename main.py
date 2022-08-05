@@ -1,367 +1,323 @@
+"""
+Main file for Blackjack card counter. Keeps track of the cards played, Count, and True Count
+"""
 
-# Blackjack card counter (GUI)
-
-# Import necessary libraries
-# External dependencies
-import enum
-from re import T
 import tkinter as tk
-from tkinter import Label, ttk, messagebox
-from tkinter import *
-from turtle import width
-from unicodedata import numeric
-# from Blackjack_score_keeper import main
-
-# System dependencies
-import os
-import subprocess
-import threading
+from tkinter import Toplevel, ttk
 
 from strategy import basic_strategy
 
-# Initialize variables
-count = 0
-numCards = 0
-log = []
-numDecks = 6
-cards = ["A", "K", "Q", "J", "10", "9", "8", 
-         "7", "6", "5", "4", "3", "2"]
-cardsRemaining = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-# Define and calculate true count (the_BigMike_)
-# Update number of decks
-def deckInput():
-    global numDecks
-    # Enter number of decks
-    inp = decksInput.get(1.0, "end-1c")
-    numDecks = int(inp)
-    decksLabel.configure(text=f'Number of decks: {numDecks}')
-    label3.configure(text=f'True Count = {trueCount()}')
-    remaining()
+class Blackjack:
+    """
+    Class to keep track and update variables within the application
+    """
 
-def strategy():
-    playerValue = []
-    soft = False
-    player = playerInput.get(1.0, "end-1c").split(',')
-    dealer = dealerInput.get(1.0, "end-1c")
-    match(dealer.lower()):
-        case "a":
-            dealerValue = 1
-        case "k" | "q" | 'j':
-            dealerValue = 10
-        case _:
-            dealerValue = int(dealer)
-    for i, card in enumerate(player):
-        match(player[i].lower()):
+    def __init__(self):
+        self.count = 0
+        self.num_cards = 0
+        self.num_decks = 6
+        self.cards = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"]
+        self.cash = 0
+        self.win = 0
+        self.loss = 0
+        self.push = 0
+        self.diff = 0
+        self.window = tk.Tk()
+        self.log_area = tk.Label()
+        self.count_label = tk.Label()
+        self.true_count_label = tk.Label()
+        self.cards_played_label = tk.Label()
+        self.decks_label = tk.Label()
+        self.decks_input = tk.Text()
+        self.dealer_label = tk.Label()
+        self.dealer_input = tk.Text()
+        self.player_label = tk.Label()
+        self.player_input = tk.Text()
+        self.action_label = tk.Label()
+
+    def clicked(self, card):
+        """
+        Runs when a low card is dealt (2-6) to keep track of the
+        count/true count and add number to the log
+        """
+        self.count = self.count + 1
+        self.num_cards = self.num_cards + 1
+
+        self.count_label.configure(text=f"Count: {self.count}")
+        self.true_count_label.configure(text=f"True Count: {self.true_count()}")
+        self.cards_played_label.configure(text=f"Cards Played: {self.num_cards}")
+
+        self.log_area.insert(0, card)
+
+    def clicked_null(self, card):
+        """
+        Runs when a middle card is dealt (7-9) to keep track of the
+        count/true count and add number to the log
+        """
+        self.num_cards = self.num_cards + 1
+
+        self.count_label.configure(text=f"Count: {self.count}")
+        self.true_count_label.configure(text=f"True Count: {self.true_count()}")
+        self.cards_played_label.configure(text=f"Cards Played: {self.num_cards}")
+
+        self.log_area.insert(0, card)
+
+    def clicked_neg(self, card):
+        """
+        Runs when a high card is dealt (9-A) to keep track of the
+        count/true count and add number to the log
+        """
+        self.count = self.count - 1
+        self.num_cards = self.num_cards + 1
+
+        self.count_label.configure(text=f"Count: {self.count}")
+        self.true_count_label.configure(text=f"True Count: {self.true_count()}")
+        self.cards_played_label.configure(text=f"Cards Played: {self.num_cards}")
+
+        self.log_area.insert(0, card)
+
+    def true_count(self):
+        """
+        Calculates the true count when a card is dealt.
+        Detemined by the count/number of remaining decks
+        """
+        return round(self.count / (((52 * self.num_decks) - self.num_cards) / 52))
+
+    def shuffle(self):
+        """
+        Resets the count/true count, and number of cards played to 0
+        Run when the shoe is changed
+        """
+        self.count = 0
+        self.num_cards = 0
+
+        self.count_label.configure(text=f"Count: {self.count}")
+        self.true_count_label.configure(text=f"True Count: {self.true_count()}")
+        self.cards_played_label.configure(text=f"Cards Played: {self.num_cards}")
+        self.log_area.delete(0, "end")
+
+    def deck_input(self):
+        """
+        Allows user to update the number of decks being played
+        Increases the accuracy of the true count
+        """
+        self.num_decks = int(self.decks_input.get(1.0, "end-1c"))
+
+        self.decks_label.configure(text=f"Number of Decks: {self.num_decks}")
+        self.true_count_label.configure(text=f"True Count: {self.true_count()}")
+
+    def strategy(self):
+        """
+        User inputs the dealer/player cards and is given the correct action to take
+        """
+        player_value = []
+        soft = False
+        player = self.player_input.get(1.0, "end-1c").split(",")
+        dealer = self.dealer_input.get(1.0, "end-1c")
+
+        match (dealer.lower()):
             case "a":
-                playerValue.append(11)
-                soft = True
-            case "k" | "q" | 'j':
-                playerValue.append(10)
+                dealer_value = 1
+            case "k" | "q" | "j":
+                dealer_value = 10
             case _:
-                playerValue.append(int(player[i]))
-    label4.configure(text=f'What to do: {basic_strategy(sum(playerValue), dealerValue, soft)}')
-    
+                dealer_value = int(dealer)
 
-#calculates the number of remaining cards for each value
-def remaining():
-    for i, card in enumerate(cards):
-        cardsRemaining[i] = 4*numDecks
-    remainingA.configure(text=f"A: {cardsRemaining[0]}")
-    remainingK.configure(text=f"K: {cardsRemaining[1]}")
-    remainingQ.configure(text=f"Q: {cardsRemaining[2]}")
-    remainingJ.configure(text=f"J: {cardsRemaining[3]}")
-    remaining10.configure(text=f"10: {cardsRemaining[4]}")
-    remaining9.configure(text=f"9: {cardsRemaining[5]}")
-    remaining8.configure(text=f"8: {cardsRemaining[6]}")
-    remaining7.configure(text=f"7: {cardsRemaining[7]}")
-    remaining6.configure(text=f"6: {cardsRemaining[8]}")
-    remaining5.configure(text=f"5: {cardsRemaining[9]}")
-    remaining4.configure(text=f"4: {cardsRemaining[10]}")
-    remaining2.configure(text=f"2: {cardsRemaining[12]}")
-    remaining3.configure(text=f"3: {cardsRemaining[11]}")
+        for card in player:
+            match (card.lower()):
+                case "a":
+                    player_value.append(11)
+                    soft = True
+                case "k" | "q" | "j":
+                    player_value.append(10)
+                case _:
+                    player_value.append(int(card))
 
-# Calculate the true count
-def trueCount():
-    return round(count/(((52*numDecks)-numCards)/52))
+        self.action_label.configure(
+            text=f"What to do: {basic_strategy(sum(player_value), dealer_value, soft)}"
+        )
 
-# Define when "clicked"
-def clicked(): # without event because I use `command=` instead of `bind`
-    global count
-    global numCards
+    def win_loss(self):
+        """
+        Tracks the wins and losses for the session
+        """
+        new_window = Toplevel(self.window)
 
-    count = count + 1
-    numCards = numCards + 1
+        tk.Label(new_window, text="What is your starting amount?").grid(row=0)
+        initial_cash = tk.Entry(new_window)
+        initial_cash.grid(row=0, column=1)
 
-    label1.configure(text=f'Count = {count}')
-    label2.configure(text=f'Cards Played = {numCards}')
-    label3.configure(text=f'True Count = {trueCount()}')
+        tk.Label(new_window, text="Was the last hand won or lost?").grid(row=1)
+        record = tk.Entry(new_window)
+        record.grid(row=1, column=1)
 
-def clicked_null(): # without event because I use `command=` instead of `bind`
-    global numCards
+        tk.Label(new_window, text="What was the bet amount ?").grid(row=2)
+        bet_amt = tk.Entry(new_window)
+        bet_amt.grid(row=2, column=1)
 
-    numCards = numCards + 1
+        def output(self):
+            """
+            Calculates the output of the calculations for win/loss
+            """
+            if self.win + self.loss + self.push == 0:
+                self.cash = int(initial_cash.get())
+            trecord = str(record.get())
+            tbet_amt = int(bet_amt.get())
 
-    label2.configure(text=f'Cards Played = {numCards}')
-    label3.configure(text=f'True Count = {trueCount()}')
+            if trecord == "w":
+                self.win = self.win + 1
+                self.cash = int(self.cash) + int(tbet_amt)
+                self.diff = self.diff + int(tbet_amt)
+            elif trecord == "l":
+                self.loss = self.loss + 1
+                int(tbet_amt)
+                self.cash = int(self.cash) - int(tbet_amt)
+                self.diff = self.diff - int(tbet_amt)
+            elif trecord == "p":
+                self.push = self.push + 1
 
-def clicked_neg():
-    global count
-    global numCards
+            tk.Label(
+                new_window,
+                text=f"Record (win, loss, push): {self.win} - {self.loss} - {self.push}",
+            ).grid(row=4)
+            tk.Label(new_window, text=f"Balance: {self.cash}").grid(row=5)
+            tk.Label(new_window, text=f"Session P/L: {self.diff}").grid(row=6)
 
-    count = count - 1
-    numCards = numCards + 1
-
-    label1.configure(text=f'Count = {count}')
-    label2.configure(text=f'Cards Played = {numCards}')
-    label3.configure(text=f'True Count = {trueCount()}')
-
-# Logging
-def add_log(x):
-    global log
-    log.insert(0, x)
-    match(x):
-        case "A":
-            cardsRemaining[0] = cardsRemaining[0]-1
-            remainingA.configure(text=f"A: {cardsRemaining[0]}")
-        case "K":
-            cardsRemaining[1] = cardsRemaining[1]-1
-            remainingK.configure(text=f"K: {cardsRemaining[1]}")
-        case "Q":
-            cardsRemaining[2] = cardsRemaining[2]-1
-            remainingQ.configure(text=f"Q: {cardsRemaining[2]}")
-        case "J":
-            cardsRemaining[3] = cardsRemaining[3]-1
-            remainingJ.configure(text=f"J: {cardsRemaining[3]}")
-        case "10":
-            cardsRemaining[4] = cardsRemaining[4]-1
-            remaining10.configure(text=f"10: {cardsRemaining[4]}")
-        case "9":
-            cardsRemaining[5] = cardsRemaining[5]-1
-            remaining9.configure(text=f"9: {cardsRemaining[5]}")
-        case "8":
-            cardsRemaining[6] = cardsRemaining[6]-1
-            remaining8.configure(text=f"8: {cardsRemaining[6]}")
-        case "7":
-            cardsRemaining[7] = cardsRemaining[7]-1
-            remaining7.configure(text=f"7: {cardsRemaining[7]}")
-        case "6":
-            cardsRemaining[8] = cardsRemaining[8]-1
-            remaining6.configure(text=f"6: {cardsRemaining[8]}")
-        case "5":
-            cardsRemaining[9] = cardsRemaining[9]-1
-            remaining5.configure(text=f"5: {cardsRemaining[9]}")
-        case "4":
-            cardsRemaining[10] = cardsRemaining[10]-1
-            remaining4.configure(text=f"4: {cardsRemaining[10]}")
-        case "3":
-            cardsRemaining[11] = cardsRemaining[11]-1
-            remaining3.configure(text=f"3: {cardsRemaining[11]}")
-        case "2":
-            cardsRemaining[12] = cardsRemaining[12]-1
-            remaining2.configure(text=f"2: {cardsRemaining[12]}")
-
-# Shuffle and reset count
-def shuffle():
-    global count
-    global numCards
-    count = 0
-    numCards = 0
-    label1.configure(text=f'Count = {count}')
-    label2.configure(text=f'Cards Played = {numCards}')
-    label3.configure(text=f'True Count = {trueCount()}')
-    remaining()
-
-# initiate the number of cards based on the number of decks
-for i, card in enumerate(cards):
-    cardsRemaining[i] = 4*numDecks
-
-def win_loss():
-    newWindow = Toplevel(windows)
-    global win
-    global loss
-    global push
-    global diff
-    global cash
-    cash = 0
-    win = 0
-    loss = 0
-    push = 0
-    diff = 0
-
-    tk.Label(newWindow, text="What is your starting amount?").grid(row=0)
-    initialCash = tk.Entry(newWindow)
-    initialCash.grid(row=0, column=1)
-
-    tk.Label(newWindow, text="Was the last hand won or lost?").grid(row=1)
-    record = tk.Entry(newWindow)
-    record.grid(row=1, column=1)
-
-    tk.Label(newWindow, text="What was the bet amount ?").grid(row=2)
-    bet_amt = tk.Entry(newWindow)
-    bet_amt.grid(row=2, column=1)
-
-    def output():
-        global cash
-        global win
-        global loss
-        global push
-        global diff
-        global cash
-      
-        if(win+loss+push == 0):
-            cash = int(initialCash.get())
-        trecord = str(record.get())
-        tbet_amt = int(bet_amt.get())
-
-        if trecord == "w":
-            win = win + 1
-            cash = int(cash) + int(tbet_amt)
-            diff = diff + int(tbet_amt)
-        
-        if trecord == "l":
-            loss = loss + 1
-            int(tbet_amt)
-            cash = int(cash) - int(tbet_amt)
-            diff = diff - int(tbet_amt)
-        
-        if trecord == "p":
-            push = push + 1
-        
-        tk.Label(newWindow, text=f"Record (win, loss, push): {win} - {loss} - {push}").grid(row=4)
-        tk.Label(newWindow, text=f"Balance: {cash}").grid(row=5)
-        tk.Label(newWindow, text=f"Session P/L: {diff}").grid(row=6)
-
-    custom_button = tk.Button(newWindow, text="calculate", command=output)
-    custom_button.grid(row = 3, column=0)    
-
-# GUI stuff below
-windows = tk.Tk()
-windows.title("")
-
-label = tk.Label(windows, text="Blackjack card counter")
-label.grid(column=0, row=0)
-
-logLabel = tk.Label(windows, text="Card log:")
-logLabel.grid(column=1, row=10)
-
-log = tk.Listbox(windows)
-log.grid(column=1, row=11)
-
-label = tk.Label(windows, text="")
-label.grid(column=4, row=0)
-
-label1 = tk.Label(windows)
-label1.grid(column=0, row=1)
-
-label2 = tk.Label(windows)
-label2.grid(column=2, row=1)
-
-label3 = tk.Label(windows)
-label3.grid(column=1, row=1)
-
-label4 = tk.Label(windows, text="What to do: ")
-label4.grid(column=2, row=12)
-
-# Plus cards
-custom_button = ttk.Button(windows, text="2", command=lambda: [clicked(), add_log("2")])
-custom_button.grid(column=0, row=2)
-
-custom_button = ttk.Button(windows, text="3", command=lambda: [clicked(), add_log("3")])
-custom_button.grid(column=0, row=3)
-
-custom_button = ttk.Button(windows, text="4", command=lambda: [clicked(), add_log("4")])
-custom_button.grid(column=0, row=4)
-
-custom_button = ttk.Button(windows, text="5", command=lambda: [clicked(), add_log("5")])
-custom_button.grid(column=0, row=5)
-
-custom_button = ttk.Button(windows, text="6", command=lambda: [clicked(), add_log("6")])
-custom_button.grid(column=0, row=6)
-
-# Middle Cards
-custom_button = ttk.Button(windows, text="7", command=lambda: [clicked_null(), add_log("7")])
-custom_button.grid(column=1, row=2)
-
-custom_button = ttk.Button(windows, text="8", command=lambda: [clicked_null(), add_log("8")])
-custom_button.grid(column=1, row=3)
-
-custom_button = ttk.Button(windows, text="9", command=lambda: [clicked_null(), add_log("9")])
-custom_button.grid(column=1, row=4)
-
-# Minus cards
-custom_button = ttk.Button(windows, text="10", command=lambda: [clicked_neg(), add_log("10")])
-custom_button.grid(column=2, row=2)
-
-custom_button = ttk.Button(windows, text="J", command=lambda: [clicked_neg(), add_log("J")])
-custom_button.grid(column=2, row=3)
-
-custom_button = ttk.Button(windows, text="Q", command=lambda: [clicked_neg(), add_log("Q")])
-custom_button.grid(column=2, row=4)
-
-custom_button = ttk.Button(windows, text="K", command=lambda: [clicked_neg(), add_log("K")])
-custom_button.grid(column=2, row=5)
-
-custom_button = ttk.Button(windows, text="A", command=lambda: [clicked_neg(), add_log("A")])
-custom_button.grid(column=2, row=6)
-
-# Shuffle button
-custom_button = ttk.Button(windows, text="Shuffle", command=lambda: [shuffle()])
-custom_button.grid(column=1, row=7)
+        custom_button = tk.Button(
+            new_window, text="Calculate", command=lambda: [output(self)]
+        )
+        custom_button.grid(row=3, column=0)
 
 
-# Win/Loss
-newButton = ttk.Button(windows, text='Win/Loss', command=win_loss)
-newButton.grid(row=11, column=0)
+def main():
+    """
+    Main window of the blackjack card counter application
+    """
+    blackjack = Blackjack()
+    blackjack.window.title("Card Counter")
 
-# Deck Input
-decksLabel = tk.Label(windows, text=f"Number of decks: {numDecks}")
-decksLabel.grid(column=0, row=8)
-decksInput = tk.Text(windows, height = 1, width = 5)
-decksInput.grid(column=0, row=9)
-custom_button = ttk.Button(windows, text="Update", command=lambda: [deckInput()])
-custom_button.grid(column=0, row=10)
+    label = tk.Label(blackjack.window, text="Blackjack card counter")
+    label.grid(column=0, row=0)
 
-# Dealer Input
-dealerLabel = tk.Label(windows, text=f"Dealer Card:", height=1)
-dealerLabel.grid(column=0, row=12)
-dealerInput = tk.Text(windows, height = 1, width = 10)
-dealerInput.grid(column=0, row=13)
+    log_label = tk.Label(blackjack.window, text="Card Log:")
+    log_label.grid(column=1, row=10)
 
-# Player Input
-playerLabel = tk.Label(windows, text=f"Player Cards")
-playerLabel.grid(column=1, row=12)
-playerInput = tk.Text(windows, height = 1, width = 10)
-playerInput.grid(column=1, row=13)
-custom_button = ttk.Button(windows, text="Update", command=lambda: [strategy()])
-custom_button.grid(column=1, row=14)
+    blackjack.log_area = tk.Listbox(blackjack.window)
+    blackjack.log_area.grid(column=1, row=11)
 
-# Number of cards remaining
-remainingA = tk.Label(windows, text=f"A: {cardsRemaining[0]}")
-remainingA.grid(column=3, row=2)
-remainingK = tk.Label(windows, text=f"K: {cardsRemaining[1]}")
-remainingK.grid(column=3, row=3)
-remainingQ = tk.Label(windows, text=f"Q: {cardsRemaining[2]}")
-remainingQ.grid(column=3, row=4)
-remainingJ = tk.Label(windows, text=f"J: {cardsRemaining[3]}")
-remainingJ.grid(column=3, row=5)
-remaining10 = tk.Label(windows, text=f"10: {cardsRemaining[4]}")
-remaining10.grid(column=3, row=6)
-remaining9 = tk.Label(windows, text=f"9: {cardsRemaining[5]}")
-remaining9.grid(column=3, row=7)
-remaining8 = tk.Label(windows, text=f"8: {cardsRemaining[6]}")
-remaining8.grid(column=3, row=8)
-remaining7 = tk.Label(windows, text=f"7: {cardsRemaining[7]}")
-remaining7.grid(column=3, row=9)
-remaining6 = tk.Label(windows, text=f"6: {cardsRemaining[8]}")
-remaining6.grid(column=4, row=2)
-remaining5 = tk.Label(windows, text=f"5: {cardsRemaining[9]}")
-remaining5.grid(column=4, row=3)
-remaining4 = tk.Label(windows, text=f"4: {cardsRemaining[10]}")
-remaining4.grid(column=4, row=4)
-remaining3 = tk.Label(windows, text=f"3: {cardsRemaining[11]}")
-remaining3.grid(column=4, row=5)
-remaining2 = tk.Label(windows, text=f"2: {cardsRemaining[12]}")
-remaining2.grid(column=4, row=6)
+    blackjack.count_label = tk.Label(blackjack.window, text="Count:")
+    blackjack.count_label.grid(column=0, row=1)
 
-windows.mainloop()
+    blackjack.true_count_label = tk.Label(blackjack.window, text="True Count:")
+    blackjack.true_count_label.grid(column=1, row=1)
+
+    blackjack.cards_played_label = tk.Label(blackjack.window, text="Cards Played:")
+    blackjack.cards_played_label.grid(column=2, row=1)
+
+    # Shuffle button
+    custom_button = ttk.Button(
+        blackjack.window, text="Shuffle", command=lambda: [blackjack.shuffle()]
+    )
+    custom_button.grid(column=1, row=7)
+
+    # Plus cards
+    custom_button = ttk.Button(
+        blackjack.window, text="2", command=lambda: [blackjack.clicked("2")]
+    )
+    custom_button.grid(column=0, row=2)
+    custom_button = ttk.Button(
+        blackjack.window, text="3", command=lambda: [blackjack.clicked("3")]
+    )
+    custom_button.grid(column=0, row=3)
+    custom_button = ttk.Button(
+        blackjack.window, text="4", command=lambda: [blackjack.clicked("4")]
+    )
+    custom_button.grid(column=0, row=4)
+    custom_button = ttk.Button(
+        blackjack.window, text="5", command=lambda: [blackjack.clicked("5")]
+    )
+    custom_button.grid(column=0, row=5)
+    custom_button = ttk.Button(
+        blackjack.window, text="6", command=lambda: [blackjack.clicked("6")]
+    )
+    custom_button.grid(column=0, row=6)
+
+    # Middle Cards
+    custom_button = ttk.Button(
+        blackjack.window, text="7", command=lambda: [blackjack.clicked_null("7")]
+    )
+    custom_button.grid(column=1, row=2)
+    custom_button = ttk.Button(
+        blackjack.window, text="8", command=lambda: [blackjack.clicked_null("8")]
+    )
+    custom_button.grid(column=1, row=3)
+    custom_button = ttk.Button(
+        blackjack.window, text="9", command=lambda: [blackjack.clicked_null("9")]
+    )
+    custom_button.grid(column=1, row=4)
+
+    # Minus cards
+    custom_button = ttk.Button(
+        blackjack.window, text="10", command=lambda: [blackjack.clicked_neg("10")]
+    )
+    custom_button.grid(column=2, row=2)
+    custom_button = ttk.Button(
+        blackjack.window, text="J", command=lambda: [blackjack.clicked_neg("J")]
+    )
+    custom_button.grid(column=2, row=3)
+    custom_button = ttk.Button(
+        blackjack.window, text="Q", command=lambda: [blackjack.clicked_neg("Q")]
+    )
+    custom_button.grid(column=2, row=4)
+    custom_button = ttk.Button(
+        blackjack.window, text="K", command=lambda: [blackjack.clicked_neg("K")]
+    )
+    custom_button.grid(column=2, row=5)
+    custom_button = ttk.Button(
+        blackjack.window, text="A", command=lambda: [blackjack.clicked_neg("A")]
+    )
+    custom_button.grid(column=2, row=6)
+
+    # Deck Input
+    blackjack.decks_label = tk.Label(
+        blackjack.window, text=f"Number of Decks: {blackjack.num_decks}"
+    )
+    blackjack.decks_label.grid(column=0, row=8)
+    blackjack.decks_input = tk.Text(blackjack.window, height=1, width=5)
+    blackjack.decks_input.grid(column=0, row=9)
+    custom_button = ttk.Button(
+        blackjack.window, text="Update", command=lambda: [blackjack.deck_input()]
+    )
+    custom_button.grid(column=0, row=10)
+
+    # Dealer Input
+    blackjack.dealer_label = tk.Label(blackjack.window, text="Dealer Card:")
+    blackjack.dealer_label.grid(column=0, row=12)
+    blackjack.dealer_input = tk.Text(blackjack.window, height=1, width=10)
+    blackjack.dealer_input.grid(column=0, row=13)
+
+    # Player Input
+    blackjack.player_label = tk.Label(blackjack.window, text="Player Cards:")
+    blackjack.player_label.grid(column=1, row=12)
+    blackjack.player_input = tk.Text(blackjack.window, height=1, width=10)
+    blackjack.player_input.grid(column=1, row=13)
+    custom_button = ttk.Button(
+        blackjack.window, text="Update", command=lambda: [blackjack.strategy()]
+    )
+    custom_button.grid(column=1, row=14)
+
+    # What action to take
+    blackjack.action_label = tk.Label(blackjack.window, text="What to do: ")
+    blackjack.action_label.grid(column=2, row=12)
+
+    win_loss_button = ttk.Button(
+        blackjack.window, text="Win/Loss", command=blackjack.win_loss
+    )
+    win_loss_button.grid(row=11, column=0)
+
+    blackjack.window.mainloop()
+
+
+if __name__ == "__main__":
+    main()
