@@ -4,7 +4,7 @@ Main file for Blackjack card counter. Keeps track of the cards played, Count, an
 
 import tkinter as tk
 from tkinter import Toplevel, ttk
-
+from logger import logger
 from strategy import basic_strategy
 
 
@@ -49,6 +49,7 @@ class Blackjack:
         self.cards_played_label.configure(text=f"Cards Played: {self.num_cards}")
 
         self.log_area.insert(0, card)
+        logger(card)
 
     def clicked_null(self, card):
         """
@@ -62,6 +63,7 @@ class Blackjack:
         self.cards_played_label.configure(text=f"Cards Played: {self.num_cards}")
 
         self.log_area.insert(0, card)
+        logger(card)
 
     def clicked_neg(self, card):
         """
@@ -76,6 +78,7 @@ class Blackjack:
         self.cards_played_label.configure(text=f"Cards Played: {self.num_cards}")
 
         self.log_area.insert(0, card)
+        logger(card)
 
     def true_count(self):
         """
