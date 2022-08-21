@@ -41,7 +41,7 @@ class Blackjack:
         Runs when a low card is dealt (2-6) to keep track of the
         count/true count and add number to the log
         """
-        self.count = self.count + 1
+        self.count = self.count - 1
         self.num_cards = self.num_cards + 1
 
         self.count_label.configure(text=f"Count: {self.count}")
@@ -70,7 +70,7 @@ class Blackjack:
         Runs when a high card is dealt (9-A) to keep track of the
         count/true count and add number to the log
         """
-        self.count = self.count - 1
+        self.count = self.count + 1
         self.num_cards = self.num_cards + 1
 
         self.count_label.configure(text=f"Count: {self.count}")
