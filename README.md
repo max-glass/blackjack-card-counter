@@ -41,3 +41,5 @@ https://discord.gg/T6yGFXgWhY
     * the_BigMike_ - Resolved Win/Loss bug
   * Aug 4
     * the_BigMike_ - Refactored code to conform to Python best practices
+  * Aug 21
+    * mxGlass - Resolved count/true count +/- bug
