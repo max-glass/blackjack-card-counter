@@ -1,6 +1,6 @@
 
 # Blackjack card counter
-mxGlass
+_**mxGlass**_
 
 **Requires Python 3.10 or later**
 
