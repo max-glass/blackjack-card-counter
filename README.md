@@ -15,9 +15,9 @@ Thank you to our contributors!
 
 Check out the stream/community!
 
-twitch.tv/mxGlass
+**twitch.tv/mxGlass**
 
-https://discord.gg/T6yGFXgWhY
+**https://discord.gg/T6yGFXgWhY**
 
 
 # TODOs
