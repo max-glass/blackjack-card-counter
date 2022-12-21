@@ -40,8 +40,8 @@ Check out the stream/community!
   * Aug 1
     * the_BigMike_ - Added strategy, tells user to hit/stand/double using basic strategy.
   * Aug 2
-    * the_BigMike_ - Resolved Win/Loss bug
+    * the_BigMike_ - Resolved Win/Loss bug.
   * Aug 4
-    * the_BigMike_ - Refactored code to conform to Python best practices
+    * the_BigMike_ - Refactored code to conform to Python best practices.
   * Aug 21
-    * mxGlass - Resolved count/true count +/- bug
+    * mxGlass - Resolved count/true count +/- bug.
